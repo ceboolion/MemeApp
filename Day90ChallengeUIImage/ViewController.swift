@@ -19,11 +19,22 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         configureView()
         configureImageView()
+        configureNavigationBar()
+        promptUserToAddPicture()
     }
 
     private func configureView(){
         view.backgroundColor = .white
         title = "Meme App"
+    }
+    
+    private func promptUserToAddPicture(){
+        let ac = UIAlertController(title: "Add a picture from the library", message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            self.addPicture()
+        }))
+        present(ac, animated: true)
     }
     
     private func configureImageView(){
@@ -35,5 +46,18 @@ class ViewController: UIViewController {
         imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
+    private func configureNavigationBar(){
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPicture))
+    }
+    
+    @objc func addPicture(){
+        let picker = UIImagePickerController()
+        picker.allowsEditing = true
+        picker.delegate = self
+        present(picker, animated: true)
+    }
 }
 
+extension ViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+    
+}

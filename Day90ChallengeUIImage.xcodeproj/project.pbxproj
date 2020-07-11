@@ -13,6 +13,7 @@
 		088F301524B8E0AC000D543A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 088F301324B8E0AC000D543A /* Main.storyboard */; };
 		088F301724B8E0AD000D543A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 088F301624B8E0AD000D543A /* Assets.xcassets */; };
 		088F301A24B8E0AD000D543A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 088F301824B8E0AD000D543A /* LaunchScreen.storyboard */; };
+		088F302324B9B15B000D543A /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088F302224B9B15B000D543A /* CustomButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		088F301624B8E0AD000D543A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		088F301924B8E0AD000D543A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		088F301B24B8E0AD000D543A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		088F302224B9B15B000D543A /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		088F300C24B8E0AC000D543A /* Day90ChallengeUIImage */ = {
 			isa = PBXGroup;
 			children = (
+				088F302124B9B145000D543A /* CustomClass */,
 				088F300D24B8E0AC000D543A /* AppDelegate.swift */,
 				088F300F24B8E0AC000D543A /* SceneDelegate.swift */,
 				088F301124B8E0AC000D543A /* ViewController.swift */,
@@ -65,6 +68,14 @@
 				088F301B24B8E0AD000D543A /* Info.plist */,
 			);
 			path = Day90ChallengeUIImage;
+			sourceTree = "<group>";
+		};
+		088F302124B9B145000D543A /* CustomClass */ = {
+			isa = PBXGroup;
+			children = (
+				088F302224B9B15B000D543A /* CustomButton.swift */,
+			);
+			path = CustomClass;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,6 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				088F302324B9B15B000D543A /* CustomButton.swift in Sources */,
 				088F301224B8E0AC000D543A /* ViewController.swift in Sources */,
 				088F300E24B8E0AC000D543A /* AppDelegate.swift in Sources */,
 				088F301024B8E0AC000D543A /* SceneDelegate.swift in Sources */,

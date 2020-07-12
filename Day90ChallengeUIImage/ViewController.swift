@@ -10,8 +10,36 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var topLabel: UILabel?
-    var bottomLabel: UILabel?
+    var topLabelText = "Enter text" {
+        didSet {
+            topLabel.text = topLabelText
+        }
+    }
+    var bottomLabelText = "Enter Text" {
+        didSet {
+            bottomLabel.text = bottomLabelText
+        }
+    }
+    var topLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Enter Text"
+        label.textAlignment = .center
+        label.backgroundColor = UIColor(displayP3Red: 100, green: 100, blue: 100, alpha: 0.4)
+        label.layer.cornerRadius = 10
+        label.clipsToBounds = true
+        label.font = UIFont(name: "Avenir Next", size: 30)
+        return label
+    }()
+    var bottomLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Enter Text"
+        label.textAlignment = .center
+        label.backgroundColor = UIColor(displayP3Red: 100, green: 100, blue: 100, alpha: 0.4)
+        label.layer.cornerRadius = 10
+        label.clipsToBounds = true
+        return label
+    }()
+    
     let setTopTextButton: UIButton = {
         let button = CustomButton(type: .system)
         button.setTitle("Set Top Text", for: .normal)
@@ -66,11 +94,25 @@ class ViewController: UIViewController {
         imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100).isActive = true
+        view.addSubview(topLabel)
+        topLabel.translatesAutoresizingMaskIntoConstraints = false
+        topLabel.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 50).isActive = true
+        topLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 50).isActive = true
+        topLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -50).isActive = true
+        topLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        view.addSubview(bottomLabel)
+        bottomLabel.translatesAutoresizingMaskIntoConstraints = false
+        bottomLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -50).isActive = true
+        bottomLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 50).isActive = true
+        bottomLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -50).isActive = true
+        bottomLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     private func configureNavigationBar(){
+        let clear = UIBarButtonItem(title: "Clear", style: .plain, target: self, action: #selector(clearImage))
+        let shareImage = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareMeme))
+        navigationItem.rightBarButtonItems = [shareImage, clear]
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPicture))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear", style: .plain, target: self, action: #selector(clearImage))
     }
     
     @objc func addPicture(){
@@ -82,6 +124,14 @@ class ViewController: UIViewController {
     
     @objc func clearImage(){
         imageView.image = nil
+        topLabel.text = "Enter Text"
+        bottomLabel.text = "Enter Text"
+    }
+    
+    @objc func shareMeme(){
+        let image = [imageView.image]
+        let ac = UIActivityViewController(activityItems: image, applicationActivities: nil)
+        present(ac, animated: true)
     }
     
     private func configureButtons(){
@@ -106,28 +156,43 @@ class ViewController: UIViewController {
         let submitText = UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
             guard let text = ac?.textFields?[0].text else {return}
             self?.addTopWord(word: text)
-//            self?.topLabel?.text = text
+            self?.drawImageAndText()
         }
         ac.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         ac.addAction(submitText)
         present(ac, animated: true)
-        print(topLabel)
+        print(topLabelText)
     }
     
     func addTopWord(word: String){
-        topLabel?.text = word
-        print(topLabel)
+        topLabelText = word
+        print("Top label Text -> \(topLabelText)")
     }
     
     @objc func addBottomTextLabel(){
+        let ac = UIAlertController(title: "Bottom Label", message: "Enter text", preferredStyle: .alert)
+        ac.addTextField()
+        let submitText = UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
+            guard let text = ac?.textFields?[0].text else {return}
+            self?.addBottomWord(word: text)
+        }
+        ac.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        ac.addAction(submitText)
+        present(ac, animated: true)
         
     }
     
+    func addBottomWord(word: String){
+        bottomLabelText = word
+        print("Bottom label text -> \(bottomLabelText)")
+    }
+    
     func drawImageAndText(){
-        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 200, height: 200))
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: imageView.bounds.width, height: imageView.bounds.height))
         
         let image = renderer.image { context in
-            
+            let image = imageView.image
+            image?.draw(at: CGPoint(x: 0, y: 0))
         }
         imageView.image = image
     }

@@ -37,6 +37,7 @@ class ViewController: UIViewController {
         label.backgroundColor = UIColor(displayP3Red: 100, green: 100, blue: 100, alpha: 0.4)
         label.layer.cornerRadius = 10
         label.clipsToBounds = true
+        label.font = UIFont(name: "Avenir Next", size: 30)
         return label
     }()
     
@@ -62,6 +63,8 @@ class ViewController: UIViewController {
         image.contentMode = .scaleAspectFill
         return image
     }()
+    
+    var sharedImage: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,9 +132,11 @@ class ViewController: UIViewController {
     }
     
     @objc func shareMeme(){
-        let image = [imageView.image]
+        drawImageAndText()
+        let image = [sharedImage]
         let ac = UIActivityViewController(activityItems: image, applicationActivities: nil)
         present(ac, animated: true)
+        
     }
     
     private func configureButtons(){
@@ -191,9 +196,20 @@ class ViewController: UIViewController {
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: imageView.bounds.width, height: imageView.bounds.height))
         
         let image = renderer.image { context in
-            let image = imageView.image
-            image?.draw(at: CGPoint(x: 0, y: 0))
+            let paragraph = NSMutableParagraphStyle()
+            paragraph.alignment = .center
+            let attrs: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 30),
+                .paragraphStyle: paragraph
+            ]
+            let topAttributedString = NSAttributedString(string: topLabelText, attributes: attrs)
+            topAttributedString.draw(with: CGRect(x: 50, y: 50, width: 400, height: 40), options: .usesLineFragmentOrigin, context: nil)
+            let sharedImage = imageView.image
+            let rect = CGRect(x: 0, y: 0, width: imageView.bounds.width, height: imageView.bounds.height)
+            context.fill(rect)
+            sharedImage?.draw(in: rect, blendMode: .normal, alpha: 1)
         }
+        sharedImage = image
         imageView.image = image
     }
 }
@@ -207,6 +223,7 @@ extension ViewController: UIImagePickerControllerDelegate & UINavigationControll
             try? jpegData.write(to: imagePath)
         }
         imageView.image = image
+
         dismiss(animated: true)
     }
     
